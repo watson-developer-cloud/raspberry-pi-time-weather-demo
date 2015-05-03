@@ -7,6 +7,18 @@ var cp = require('child_process');
 var async = require('async');
 var request = require('request');
 
+var Gpio = require('onoff').Gpio,
+    led = new Gpio(17, 'out'),
+    button = new Gpio(4, 'in', 'both');
+
+button.watch(function(err, value) {
+    console.log('button changed to %s', value);
+    led.writeSync(value);
+    if(value) {
+        playTimeAndDate();
+    }
+});
+
 
 // todo: make time and date configurable (and/or figure them out from geolocation or whatever
 
@@ -90,20 +102,25 @@ function getWeatherAudio(next, results) {
     cacheAudio(format('%s degrees and %s.', results.weather.temp, results.weather.text), next);
 }
 
-// async.auto is magical
-async.auto({
-    cacheTimeStart: cacheAudio.bind(null, 'The current time in New York City is'),
-    playTimeStart: ['cacheTimeStart', playAudioFrom('cacheTimeStart')],
-    cacheTimeEnd: getTimeAudio,
-    playTimeEnd: ['playTimeStart', 'cacheTimeEnd', playAudioFrom('cacheTimeEnd')],
-    cacheWeatherStart: cacheAudio.bind(null, 'The current weather conditions are'),
-    playWeatherStart: ['playTimeEnd', 'cacheWeatherStart', playAudioFrom('cacheWeatherStart')],
-    weather: weather,
-    cacheWeatherEnd: ['weather', getWeatherAudio],
-    playWeatherEnd: ['weather', 'playWeatherStart', 'cacheWeatherEnd', playAudioFrom('cacheWeatherEnd')],
-}, function(err, results) {
-    if (err) {
-        return console.error(err);
-    }
-    //console.log(results);
-});
+// todo: debounce
+function playTimeAndDate() {
+    // async.auto is magical
+    async.auto({
+        cacheTimeStart: cacheAudio.bind(null, 'The current time in New York City is'),
+        playTimeStart: ['cacheTimeStart', playAudioFrom('cacheTimeStart')],
+        cacheTimeEnd: getTimeAudio,
+        playTimeEnd: ['playTimeStart', 'cacheTimeEnd', playAudioFrom('cacheTimeEnd')],
+        cacheWeatherStart: cacheAudio.bind(null, 'The current weather conditions are'),
+        playWeatherStart: ['playTimeEnd', 'cacheWeatherStart', playAudioFrom('cacheWeatherStart')],
+        weather: weather,
+        cacheWeatherEnd: ['weather', getWeatherAudio],
+        playWeatherEnd: ['weather', 'playWeatherStart', 'cacheWeatherEnd', playAudioFrom('cacheWeatherEnd')],
+    }, function(err, results) {
+        if (err) {
+            return console.error(err);
+        }
+        //console.log(results);
+    });
+}
+
+

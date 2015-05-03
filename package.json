@@ -11,6 +11,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "date-util": "^1.2.1",
+    "onoff": "^1.0.2",
     "request": "^2.55.0",
     "watson-developer-cloud": "^0.9.9"
   }
