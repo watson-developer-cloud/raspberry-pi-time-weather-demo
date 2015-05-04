@@ -19,6 +19,35 @@ button.watch(function(err, value) {
     }
 });
 
+var ledFastBlink = false;
+var ledTimeout, ledOn = 0;
+
+function ledTick() {
+    ledOn = ledOn ? 0 : 1;
+    led.writeSync(ledOn);
+    // if on, turn off in 100ms. If off, turn on in 400ms for fast or 3 seconds for slow
+    var nextTick = ledOn ? 100 : (ledFastBlink  ? 400 : 3000);
+    ledTimeout = setTimeout(ledTick, nextTick);
+}
+
+function blinkFast(next) {
+    clearTimeout(ledTimeout);
+    ledFastBlink = true;
+    ledTick();
+    if(next) {
+        next();
+    }
+}
+
+function blinkSlow(next) {
+    clearTimeout(ledTimeout);
+    ledFastBlink = false;
+    ledTick();
+    if(next) {
+        next();
+    }
+}
+
 
 // todo: make time and date configurable (and/or figure them out from geolocation or whatever
 
@@ -69,7 +98,7 @@ function playAudioFrom(which) {
     }
 }
 
-function weather(next) {
+function getWeather(next) {
     console.log('fetching weather');
 
     var url =  "https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='New York City, NY')&format=json";
@@ -95,26 +124,24 @@ function weather(next) {
 function getTimeAudio(next) {
     var now = new Date();
     now.setHours(now.getUTCHours() - 4); // EDT
-    cacheAudio(format('%s.', now.format("h:MM")), next);
+    cacheAudio(format('The current time in New York City is %s.', now.format("h:MM")), next);
 }
 
 function getWeatherAudio(next, results) {
-    cacheAudio(format('%s degrees and %s.', results.weather.temp, results.weather.text), next);
+    cacheAudio(format('The current weather conditions are %s degrees and %s.', results.weather.temp, results.weather.text), next);
 }
 
 // todo: debounce
 function playTimeAndDate() {
     // async.auto is magical
     async.auto({
-        cacheTimeStart: cacheAudio.bind(null, 'The current time in New York City is'),
-        playTimeStart: ['cacheTimeStart', playAudioFrom('cacheTimeStart')],
-        cacheTimeEnd: getTimeAudio,
-        playTimeEnd: ['playTimeStart', 'cacheTimeEnd', playAudioFrom('cacheTimeEnd')],
-        cacheWeatherStart: cacheAudio.bind(null, 'The current weather conditions are'),
-        playWeatherStart: ['playTimeEnd', 'cacheWeatherStart', playAudioFrom('cacheWeatherStart')],
-        weather: weather,
-        cacheWeatherEnd: ['weather', getWeatherAudio],
-        playWeatherEnd: ['weather', 'playWeatherStart', 'cacheWeatherEnd', playAudioFrom('cacheWeatherEnd')],
+        loading: blinkFast,
+        timeAudio: getTimeAudio,
+        loaded: ['timeAudio', blinkSlow],
+        playTime: ['timeAudio', playAudioFrom('timeAudio')],
+        weather: getWeather,
+        weatherAudio: ['weather', getWeatherAudio],
+        playWeather: ['playTime', 'weatherAudio', playAudioFrom('weatherAudio')]
     }, function(err, results) {
         if (err) {
             return console.error(err);
@@ -124,3 +151,5 @@ function playTimeAndDate() {
 }
 
 
+console.log('ready for input, playing once to test');
+playTimeAndDate();
