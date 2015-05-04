@@ -17,8 +17,8 @@ Run `npm start` to start the app, or use the included init.d script to run as a 
 For the dameon:
 
 1. Ensure the DAEMON and DAEMON_ARGS paths are correct
-2. Copy the script to your `/etc/init.d` folder
-3. `chmod +x /etc/init.d/time-weather`
-4. `sudo update-rc.d /etc/init.d/time-weather defaults`
+2. `sudo cp etc-init.d/time-weather /etc/init.d` # copy the script to the init.d folder where startup scripts are kept
+3. `sudo chmod +x /etc/init.d/time-weather` # ensure it's executible
+4. `sudo update-rc.d time-weather defaults` # enable it
 5. Reboot your Pi
 
