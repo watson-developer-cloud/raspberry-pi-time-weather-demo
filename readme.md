@@ -3,6 +3,8 @@ Watson Time and Weather Speech Demo
 
 Uses a Raspberry Pi and IBM Watson to speak the current time and weather.
 
+[![assembled system](http://watson-developer-cloud.github.io/rpi-time-weather-demo/time-weather-small.jpg)](http://watson-developer-cloud.github.io/rpi-time-weather-demo/time-weather.jpg)
+
 Setup
 -----
 
@@ -12,7 +14,9 @@ Download the code and run `npm install` to fetch dependencies.
 
 Next you'll need to get credentials by creating Text to Speech service instance on bluemix and binding it to a server. Edit `index.js` to include your username and password.
 
-The script expects an LED on pin 17 and a button on pin 4. You'll need a pulldown resistor on the button (2.2k worked well for me), and you may want a current-limiting resistor on the LED (I'm using a 330).
+The script expects an LED on pin 17 and a button on pin 4. You'll need a pulldown resistor on the button (2.2k worked well for me), and you may want current-limiting resistors on both the LED and the button (I'm using 330Ω).
+
+![breadboard](http://watson-developer-cloud.github.io/rpi-time-weather-demo/time-weather_bb.png)
 
 Run `npm start` to start the app, or use the included init.d script to run as a daemon. 
 
