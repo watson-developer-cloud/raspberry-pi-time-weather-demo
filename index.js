@@ -50,7 +50,10 @@ function blink(next) {
 
 function noBlink(next) {
     clearTimeout(ledTimeout);
-    led.writeSync(0)
+    led.writeSync(0);
+    if(next) {
+        next();
+    }
 }
 
 
