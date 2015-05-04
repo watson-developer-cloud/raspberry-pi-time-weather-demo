@@ -11,7 +11,18 @@ var Gpio = require('onoff').Gpio,
     led = new Gpio(17, 'out'),
     button = new Gpio(4, 'in', 'both');
 
+function exit() {
+    led.unexport();
+    button.unexport();
+    process.exit();
+}
+
+process.on('SIGINT', exit);
+
 button.watch(function(err, value) {
+    if (err) {
+        return console.error(err);
+    }
     console.log('button changed to %s', value);
     led.writeSync(value);
     if(value) {
@@ -19,33 +30,27 @@ button.watch(function(err, value) {
     }
 });
 
-var ledFastBlink = false;
 var ledTimeout, ledOn = 0;
 
 function ledTick() {
     ledOn = ledOn ? 0 : 1;
     led.writeSync(ledOn);
-    // if on, turn off in 100ms. If off, turn on in 400ms for fast or 3 seconds for slow
-    var nextTick = ledOn ? 100 : (ledFastBlink  ? 400 : 3000);
+    // if on, turn off in 100ms. If off, turn on in 400ms
+    var nextTick = ledOn ? 100 : 400;
     ledTimeout = setTimeout(ledTick, nextTick);
 }
 
-function blinkFast(next) {
+function blink(next) {
     clearTimeout(ledTimeout);
-    ledFastBlink = true;
     ledTick();
     if(next) {
         next();
     }
 }
 
-function blinkSlow(next) {
+function noBlink(next) {
     clearTimeout(ledTimeout);
-    ledFastBlink = false;
-    ledTick();
-    if(next) {
-        next();
-    }
+    led.writeSync(0)
 }
 
 
@@ -58,13 +63,13 @@ var text_to_speech = watson.text_to_speech({
 });
 
 
-function audioFileName(text) {
+function audioFilePath(text) {
     // todo: ensure this directory exists
-    return './cache/' + text.replace(/[^a-z0-9-_]/ig, '-') + '.opus';
+    return __dirname + '/cache/' + text.replace(/[^a-z0-9-_]/ig, '-') + '.opus';
 }
 
 function cacheAudio(text, next) {
-    var outfile = audioFileName(text);
+    var outfile = audioFilePath(text);
 
     fs.exists(outfile, function(alreadyCached) {
         if (alreadyCached) {
@@ -135,9 +140,9 @@ function getWeatherAudio(next, results) {
 function playTimeAndDate() {
     // async.auto is magical
     async.auto({
-        loading: blinkFast,
+        loading: blink,
         timeAudio: getTimeAudio,
-        loaded: ['timeAudio', blinkSlow],
+        loaded: ['timeAudio', noBlink],
         playTime: ['timeAudio', playAudioFrom('timeAudio')],
         weather: getWeather,
         weatherAudio: ['weather', getWeatherAudio],
