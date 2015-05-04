@@ -60,8 +60,8 @@ function noBlink(next) {
 // todo: make time and date configurable (and/or figure them out from geolocation or whatever
 
 var text_to_speech = watson.text_to_speech({
-    "username": "0eaef628-d28e-4365-b0db-069046f37fef",
-    "password": "Mm1DWPHFC7sq",
+    "username": "<username>",
+    "password": "<password>",
     version: 'v1'
 });
 
