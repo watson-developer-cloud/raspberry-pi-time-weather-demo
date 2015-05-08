@@ -6,6 +6,7 @@ require('date-util');
 var cp = require('child_process');
 var async = require('async');
 var request = require('request');
+var config = require('./config.js');
 
 var Gpio = require('onoff').Gpio,
     led = new Gpio(17, 'out'),
@@ -60,8 +61,8 @@ function noBlink(next) {
 // todo: make time and date configurable (and/or figure them out from geolocation or whatever
 
 var text_to_speech = watson.text_to_speech({
-    "username": "<username>",
-    "password": "<password>",
+    "username": config.TTS_USERNAME,
+    "password": config.TTS_PASSWORD,
     version: 'v1'
 });
 
@@ -102,7 +103,7 @@ function playAudioFrom(which) {
     return function(next, results) {
         var filename = results[which];
         console.log('playing %s (%s)', which, filename);
-        cp.exec(format('omxplayer %s', filename), next);
+        cp.exec(format('omxplayer -o local %s', filename), next);
     }
 }
 
