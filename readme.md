@@ -12,7 +12,7 @@ Requires Node.js, tested on v0.12.2. (I'm using a [pre-compiled binary from cono
 
 Download the code and run `npm install` to fetch dependencies.
 
-Next you'll need to get credentials by creating Text to Speech service instance on bluemix and binding it to a server. Edit `index.js` to include your username and password.
+Next you'll need to get credentials by creating [Text to Speech service](http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/text-to-speech.html) instance on bluemix and binding it to a server. Edit `index.js` to include your username and password.
 
 The script expects an LED on pin 17 and a button on pin 4. You'll need a pulldown resistor on the button (2.2k worked well for me), and you may want current-limiting resistors on both the LED and the button (I'm using 330Ω).
 
