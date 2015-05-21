@@ -24,7 +24,7 @@ For the dameon:
 
 1. Ensure the DAEMON and DAEMON_ARGS paths are correct
 2. `sudo cp etc-init.d/time-weather /etc/init.d` # copy the script to the init.d folder where startup scripts are kept
-3. `sudo chmod +x /etc/init.d/time-weather` # ensure it's executible
+3. `sudo chmod +x /etc/init.d/time-weather` # ensure it's executable
 4. `sudo update-rc.d time-weather defaults` # enable it
 5. Reboot your Pi
 
