@@ -84,7 +84,7 @@ function cacheAudio(text, next) {
 
             var params = {
                 text: text,
-                //voice: 'VoiceEnUsMichael', // Optional voice
+                //voice: 'en-US_MichaelVoice', // Optional voice
                 accept: 'audio/ogg; codec=opus' //'audio/wav'
             };
 
