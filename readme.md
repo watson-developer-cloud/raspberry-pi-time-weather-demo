@@ -3,6 +3,8 @@ Watson Time and Weather Speech Demo
 
 Uses a Raspberry Pi and IBM Watson to speak the current time and weather.
 
+Also see https://github.com/watson-developer-cloud/raspberry-pi-speech-to-text for an example of using Speech to Text on a Raspberry Pi.
+
 [![assembled system](http://watson-developer-cloud.github.io/rpi-time-weather-demo/time-weather-small.jpg)](http://watson-developer-cloud.github.io/rpi-time-weather-demo/time-weather.jpg)
 
 Setup
