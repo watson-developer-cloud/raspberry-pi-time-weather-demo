@@ -6,7 +6,7 @@ require('date-util');
 var cp = require('child_process');
 var async = require('async');
 var request = require('request');
-var config = require('./config.js');
+require('dotenv').load();
 
 var Gpio = require('onoff').Gpio,
     led = new Gpio(17, 'out'),
@@ -61,8 +61,8 @@ function noBlink(next) {
 // todo: make time and date configurable (and/or figure them out from geolocation or whatever
 
 var text_to_speech = watson.text_to_speech({
-    "username": config.TTS_USERNAME,
-    "password": config.TTS_PASSWORD,
+    "username": process.env.TTS_USERNAME,
+    "password": process.env.TTS_PASSWORD,
     version: 'v1'
 });
 
