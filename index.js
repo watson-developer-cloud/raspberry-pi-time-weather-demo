@@ -6,7 +6,7 @@ require('date-util');
 var cp = require('child_process');
 var async = require('async');
 var request = require('request');
-require('dotenv').load();
+require('dotenv').load({silent: true});
 
 var Gpio = require('onoff').Gpio,
     led = new Gpio(17, 'out'),
