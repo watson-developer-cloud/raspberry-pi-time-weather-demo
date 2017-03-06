@@ -5,7 +5,7 @@ Uses a Raspberry Pi and IBM Watson to speak the current time and weather.
 
 Also see https://github.com/watson-developer-cloud/raspberry-pi-speech-to-text for an example of using Speech to Text on a Raspberry Pi. 
 
-[![assembled system](http://watson-developer-cloud.github.io/rpi-time-weather-demo/time-weather-small.jpg)](http://watson-developer-cloud.github.io/rpi-time-weather-demo/time-weather.jpg)
+[![assembled system](http://watson-developer-cloud.github.io/raspberry-pi-time-weather-demo/time-weather-small.jpg)](http://watson-developer-cloud.github.io/raspberry-pi-time-weather-demo/time-weather.jpg)
 
 Setup
 -----
@@ -23,7 +23,7 @@ You'll need a pulldown resistor on the button (2.2k worked well for me), and you
 
 Note: the script automatically reports the current time and weather at startup, so you can test it even without the extra hardware.
 
-![breadboard](http://watson-developer-cloud.github.io/rpi-time-weather-demo/time-weather_bb.png)
+![breadboard](http://watson-developer-cloud.github.io/raspberry-pi-time-weather-demo/time-weather_bb.png)
 
 Run `npm start` to start the app, or use the included init.d script to run as a daemon. 
 
