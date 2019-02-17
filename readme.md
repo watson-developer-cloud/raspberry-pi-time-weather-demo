@@ -5,7 +5,7 @@ Uses a Raspberry Pi and IBM Watson to speak the current time and weather.
 
 Also see https://github.com/watson-developer-cloud/raspberry-pi-speech-to-text for an example of using Speech to Text on a Raspberry Pi. 
 
-[![assembled system](http://watson-developer-cloud.github.io/raspberry-pi-time-weather-demo/time-weather-small.jpg)](http://watson-developer-cloud.github.io/raspberry-pi-time-weather-demo/time-weather.jpg)
+[![assembled system](http://watson-developer-cloud.github.io/raspberry-pi-time-weather-demo/time-weather-small.jpg)](http://watson-developer-cloud.github.io/raspberry-pi-time-weather-demo/time-weather.jpg) [![Greenkeeper badge](https://badges.greenkeeper.io/watson-developer-cloud/raspberry-pi-time-weather-demo.svg)](https://greenkeeper.io/)
 
 Setup
 -----
